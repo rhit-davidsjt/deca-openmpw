@@ -82,40 +82,63 @@ module user_project_wrapper #(
 /* User project is instantiated  here   */
 /*--------------------------------------*/
 
-user_proj_example mprj (
+adder32behav behavioral (
 `ifdef USE_POWER_PINS
 	.vccd1(vccd1),	// User area 1 1.8V power
 	.vssd1(vssd1),	// User area 1 digital ground
 `endif
 
-    .wb_clk_i(wb_clk_i),
-    .wb_rst_i(wb_rst_i),
+//    .wb_clk_i(wb_clk_i),
+//    .wb_rst_i(wb_rst_i),
 
     // MGMT SoC Wishbone Slave
 
-    .wbs_cyc_i(wbs_cyc_i),
-    .wbs_stb_i(wbs_stb_i),
-    .wbs_we_i(wbs_we_i),
-    .wbs_sel_i(wbs_sel_i),
-    .wbs_adr_i(wbs_adr_i),
-    .wbs_dat_i(wbs_dat_i),
-    .wbs_ack_o(wbs_ack_o),
-    .wbs_dat_o(wbs_dat_o),
+//    .wbs_cyc_i(wbs_cyc_i),
+//    .wbs_stb_i(wbs_stb_i),
+//    .wbs_we_i(wbs_we_i),
+//    .wbs_sel_i(wbs_sel_i),
+//    .wbs_adr_i(wbs_adr_i),
+//    .wbs_dat_i(wbs_dat_i),
+//    .wbs_ack_o(wbs_ack_o),
+//    .wbs_dat_o(wbs_dat_o),
 
     // Logic Analyzer
 
-    .la_data_in(la_data_in),
-    .la_data_out(la_data_out),
-    .la_oenb (la_oenb),
+//    .la_data_in(la_data_in),
+//    .la_data_out(la_data_out),
+//    .la_oenb (la_oenb),
 
     // IO Pads
 
-    .io_in (io_in),
-    .io_out(io_out),
-    .io_oeb(io_oeb),
+    .A(io_in[31:0]),
+    .B(io_in[63:32]),
+    .X(io_out[39:8]), // skip first 8 output pins because they're "dual use" (?)
+    .carry(io_out[40]),
+    .io_oeb(io_oeb[40:8]), // drive low for output enable, done in module
+    
+);
 
-    // IRQ
-    .irq(user_irq)
+adder32b rippleCarry (
+`ifdef USE_POWER_PINS
+	.vccd1(vccd1),	// User area 1 1.8V power
+	.vssd1(vssd1),	// User area 1 digital ground
+`endif
+
+    // Logic Analyzer
+
+//    .la_data_in(la_data_in),
+//    .la_data_out(la_data_out),
+//    .la_oenb (la_oenb),
+
+    // IO Pads
+
+    .a(io_in[31:0]),
+    .b(io_in[63:32]),
+    .cin(io_in[64]),
+    .sum(io_out[39:8]), // skip first 8 output pins because they're "dual use" (?)
+    .cout(io_out[40]),
+    .io_oeb(io_oeb[40:8]), // drive low for output enable, done in module
+    
 );
 
 endmodule	// user_project_wrapper

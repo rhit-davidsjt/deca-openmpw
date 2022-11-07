@@ -54,7 +54,11 @@ set ::env(MACRO_PLACEMENT_CFG) $script_dir/macro.cfg
 ### Black-box verilog and views
 set ::env(VERILOG_FILES_BLACKBOX) "\
 	$::env(CARAVEL_ROOT)/verilog/rtl/defines.v \
-	$script_dir/../../verilog/rtl/user_proj_example.v"
+	$script_dir/../../verilog/rtl/user_proj_example.v \
+	$::env(PDK_ROOT)/$::env(PDK)/libs.ref/$::env(STD_CELL_LIBRARY)/verilog/$::env(STD_CELL_LIBRARY).v \
+	$script_dir/../../verilog/rtl/adder32behav.v \
+	$script_dir/../../verilog/rtl/adder32b.v \
+	$script_dir/../../verilog/rtl/adder1b_gates.v"
 
 set ::env(EXTRA_LEFS) "\
 	$script_dir/../../lef/user_proj_example.lef"
